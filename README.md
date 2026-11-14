@@ -82,8 +82,4 @@ Kolumner:
 * *Kom ihåg att lägga `.venv` i `.gitignore` så att den inte råkar pushas upp på github.*
 ---
 
-## Reproducerbarhet & Struktur
-* Kör **Restart & Run All** innan inläμning (notebooken ska gå från topp till botten utan fel).
-* Läs data med en relativ sökväg (`data/health_study_dataset.csv`).
-* Sätt en slump-seed i början: `import numpy as np; np.random.seed(42)`.
-* `.venv` är undantaget via `.gitignore`.
+
