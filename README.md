@@ -43,7 +43,43 @@ Kolumner:
 * Beräkna konfidensintervallet med **två olika metoder** (t.ex. normalapproximation och bootstrap) och jämför resultaten.
 * Gör en simulering för att undersöka hur säkert ditt hypotestest är (**power**).
 * Motivera dina metodval i markdown och hänvisa till dokumentation eller annan källa.
+---
 
+## Del 2 – Fördjupning och pipeline
+
+### För G ska du göra:
+* **Strukturera koden:**
+  * Flytta delar av din kod från del 1 till funktioner och moduler.
+  * Skapa minst en klass (t.ex. `HealthAnalyzer`) som kan utföra någon del av analysen (t.ex. beräkna statistik eller rita grafer).
+* **Linjär algebra i praktiken:**
+  * Använd numpy eller scikit-learn för en analys som bygger på matriser/vektorer.
+  * Exempel: En enkel linjär regression för att förutsäga blodtryck från ålder eller vikt, eller PCA för att hitta mönster i datan.
+* **Utökad analys och visualisering:**
+  * Lägg till minst en ny analys eller graf som ger en djupare förståelse (t.ex. relationen mellan blodtryck och ålder, eller sjukdomsförekomst per kön).
+* **Dokumentation:**
+  * Skriv docstrings till dina funktioner/klasser.
+  * Använd markdown-rutor för att förklara vad du gör och varför.
+
+### För VG ska du även göra (Del 2):
+* Bygg en mer utvecklad klass som kan hantera flera olika analyser eller visualiseringar.
+* Använd en mer avancerad metod (t.ex. multipel regression) eller en extra visualisering som tydligt förklarar resultatet.
+* Motivera dina metodval i markdown och hänvisa till dokumentation eller annan källa.
+
+---
+
+## Betygsättning & Sammanfattning
+* **G =** Du följer instruktionerna och visar att du behärskar alla moment vi gått igenom på kursen.
+* **VG =** Du går längre än kursinnehållet, jämför metoder, gör extra simuleringar och motiverar dina val med väl underbyggda resonemang.
+
+---
+
+## Reproducerbarhet
+* Kör **Restart & Run All** innan inlämning (notebooken ska gå från topp till botten utan fel).
+* Läs data med en relativ sökväg (`data/health_study_dataset.csv`).
+* Sätt en slump-seed i början: `import numpy as np; np.random.seed(42)`.
+* Lägg till en `requirements.txt` genom att köra: `python -m pip freeze > requirements.txt` i terminalen.
+* Skriv i README.md vilken Python-version du använder (t.ex. Python 3.13.15).
+* *Kom ihåg att lägga `.venv` i `.gitignore` så att den inte råkar pushas upp på github.*
 ---
 
 ## Reproducerbarhet & Struktur
