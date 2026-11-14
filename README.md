@@ -35,7 +35,8 @@ Kolumner:
 4. **Konfidensintervall:**
    * Beräkna ett konfidensintervall för medelvärdet av `systolic_bp` (t.ex. med normalapproximation eller bootstrap).
 5. **Hypotesprövning:**
-   * Testa hypotesen: *"Rökare har högre medel-blodtryck än icke-rökare."*
+   * Testa hypotesen: *"Rökare har högre medel-blodtryck än icke-rökare."
+   * Använd en av metoderna vi gått igenom (t.ex. bootstrap eller enkel t-test-funktion).
    * Förklara kort resultatet i en markdown-ruta.
 
 ### För VG ska du även göra:
