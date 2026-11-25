@@ -168,3 +168,26 @@ class HealthAnalyzer:
         plt.show()
         
         return corr 
+    def plot_residuals(self):
+        """
+        Plot residuals from the multiple regression model.
+        Helps check if the model assumptions are reasonable.
+        """
+        model, r2, rmse = self.multiple_regression_bp()
+        
+        X = self.df[["age", "weight", "cholesterol"]]
+        y = self.df["systolic_bp"]
+        predictions = model.predict(X)
+        residuals = y - predictions
+        
+        plt.figure(figsize=(8, 5))
+        plt.scatter(predictions, residuals, alpha=0.5)
+        plt.axhline(0, color="red", linestyle="--")
+        plt.xlabel("Predicted Systolic BP")
+        plt.ylabel("Residuals")
+        plt.title("Residuals vs Predicted Values (Multiple Regression)")
+        plt.grid(True, alpha=0.3)
+        plt.show()
+        
+        print(f"R²: {r2:.3f}")
+        print(f"RMSE: {rmse:.2f}")
