@@ -91,25 +91,28 @@ class HealthAnalyzer:
 
     def plot_age_bp(self):
         """Plot age versus systolic blood pressure with a regression line."""
-        X = self.df[["age"]]
-        y = self.df["systolic_bp"]
-        model = LinearRegression()
-        model.fit(X, y)
+        # Vi får den tränade modellen från klassens befintliga metod
+        model, _, _ = self.linear_regression_age_bp()
         
-        # Create sorted values for smooth line plotting
-        x_sort = np.linspace(X.min(), X.max(), 100).reshape(-1, 1)
-        y_sort_pred = model.predict(x_sort)
-
+        # Δημιουργούμε το εύρος τιμών για την ευθεία παλινδρόμησης
+        x_min = self.df["age"].min()
+        x_max = self.df["age"].max()
+        x_sort_values = np.linspace(x_min, x_max, 100).reshape(-1, 1)
+        
+        # Vi konverterar till en DataFrame med samma kolumnnamn ("ålder") för att undvika UserWarning
+        x_sort_df = pd.DataFrame(x_sort_values, columns=["age"])
+        y_sort_pred = model.predict(x_sort_df)
+        
         plt.figure(figsize=(8, 5))
         plt.scatter(self.df["age"], self.df["systolic_bp"], alpha=0.5, label="Data points")
-        plt.plot(x_sort, y_sort_pred, color="red", linewidth=2, label="Regression Line")
+        plt.plot(x_sort_df["age"], y_sort_pred, color="red", linewidth=2, label="Regression Line")
         plt.xlabel("Age")
         plt.ylabel("Systolic Blood Pressure")
         plt.title("Age vs Blood Pressure")
         plt.legend()
         plt.grid(True, alpha=0.3)
         plt.show()
-
+        
     def plot_disease_by_sex(self):
         """Plot disease rate by sex."""
         disease_by_sex = self.df.groupby("sex")["disease"].mean()
