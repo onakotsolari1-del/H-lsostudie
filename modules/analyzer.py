@@ -5,12 +5,24 @@ from sklearn.decomposition import PCA
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_squared_error
 
+
 class HealthAnalyzer:
     """
     A class for analyzing the health study dataset.
     """
     def __init__(self, df):
         self.df = df
+
+    def _fit_regression(self, X, y):
+        """Fit a linear regression model and return model, R2 score, and RMSE."""
+        model = LinearRegression()
+        model.fit(X, y)
+
+        predictions = model.predict(X)
+        r2 = r2_score(y, predictions)
+        rmse = np.sqrt(mean_squared_error(y, predictions))
+
+        return model, r2, rmse
 
     def summary_statistics(self):
         """Return summary statistics for numeric variables."""
@@ -32,14 +44,7 @@ class HealthAnalyzer:
         """
         X = self.df[["age"]]
         y = self.df["systolic_bp"]
-        model = LinearRegression()
-        model.fit(X, y)
-        
-        predictions = model.predict(X)
-        r2 = r2_score(y, predictions)
-        rmse = np.sqrt(mean_squared_error(y, predictions))
-        
-        return model, r2, rmse
+        return self._fit_regression(X, y)
 
     def multiple_regression_bp(self):
         """
@@ -48,35 +53,28 @@ class HealthAnalyzer:
         """
         X = self.df[["age", "weight", "cholesterol"]]
         y = self.df["systolic_bp"]
-        model = LinearRegression()
-        model.fit(X, y)
-        
-        predictions = model.predict(X)
-        r2 = r2_score(y, predictions)
-        rmse = np.sqrt(mean_squared_error(y, predictions))
-        
-        return model, r2, rmse
+        return self._fit_regression(X, y)
 
     def run_pca(self):
         """
         Perform PCA on numerical features to identify patterns in data.
-        Returns pca object and standardized features DataFrame.
+        Returns pca object and DataFrame with component loadings.
         """
         features = ["age", "height", "weight", "systolic_bp", "cholesterol"]
         X = self.df[features].dropna()
-        
+
         # Standardize data (z-score normalization)
         X_scaled = (X - X.mean()) / X.std()
-        
+
         pca = PCA(n_components=2, random_state=42)
         components = pca.fit_transform(X_scaled)
-        
+
         plt.figure(figsize=(8, 5))
         scatter = plt.scatter(
-            components[:, 0], 
-            components[:, 1], 
-            c=self.df.loc[X.index, "disease"], 
-            cmap="viridis", 
+            components[:, 0],
+            components[:, 1],
+            c=self.df.loc[X.index, "disease"],
+            cmap="viridis",
             alpha=0.7
         )
         plt.title("PCA - Patterns in Health Data")
@@ -86,23 +84,21 @@ class HealthAnalyzer:
         cbar.set_label("Disease (0/1)")
         plt.grid(True, alpha=0.3)
         plt.show()
-        
+
         return pca, pd.DataFrame(pca.components_, columns=features, index=["PC1", "PC2"])
 
     def plot_age_bp(self):
         """Plot age versus systolic blood pressure with a regression line."""
-        # Vi får den tränade modellen från klassens befintliga metod
         model, _, _ = self.linear_regression_age_bp()
-        
-        # Δημιουργούμε το εύρος τιμών για την ευθεία παλινδρόμησης
+
         x_min = self.df["age"].min()
         x_max = self.df["age"].max()
         x_sort_values = np.linspace(x_min, x_max, 100).reshape(-1, 1)
-        
-        # Vi konverterar till en DataFrame med samma kolumnnamn ("ålder") för att undvika UserWarning
+
+        # Convert to DataFrame with column name "age" to avoid UserWarning
         x_sort_df = pd.DataFrame(x_sort_values, columns=["age"])
         y_sort_pred = model.predict(x_sort_df)
-        
+
         plt.figure(figsize=(8, 5))
         plt.scatter(self.df["age"], self.df["systolic_bp"], alpha=0.5, label="Data points")
         plt.plot(x_sort_df["age"], y_sort_pred, color="red", linewidth=2, label="Regression Line")
@@ -112,7 +108,7 @@ class HealthAnalyzer:
         plt.legend()
         plt.grid(True, alpha=0.3)
         plt.show()
-        
+
     def plot_disease_by_sex(self):
         """Plot disease rate by sex."""
         disease_by_sex = self.df.groupby("sex")["disease"].mean()
