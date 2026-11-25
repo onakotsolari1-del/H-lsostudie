@@ -141,3 +141,30 @@ class HealthAnalyzer:
         plt.ylabel("Systolic Blood Pressure")
         plt.grid(True, alpha=0.3)
         plt.show()
+
+
+    def plot_correlation_heatmap(self):
+        """
+        Plot a correlation heatmap for the numerical features.
+        Helps identify relationships between variables.
+        """
+        features = ["age", "height", "weight", "systolic_bp", "cholesterol"]
+        corr = self.df[features].corr()
+
+        plt.figure(figsize=(8, 6))
+        plt.imshow(corr, cmap="coolwarm", vmin=-1, vmax=1)
+        plt.colorbar(label="Correlation")
+        plt.xticks(range(len(features)), features, rotation=45, ha="right")
+        plt.yticks(range(len(features)), features)
+        
+        # Add correlation values on the heatmap
+        for i in range(len(features)):
+            for j in range(len(features)):
+                plt.text(j, i, f"{corr.iloc[i, j]:.2f}", 
+                        ha="center", va="center", color="black", fontsize=9)
+        
+        plt.title("Correlation Heatmap of Health Variables")
+        plt.tight_layout()
+        plt.show()
+        
+        return corr 
