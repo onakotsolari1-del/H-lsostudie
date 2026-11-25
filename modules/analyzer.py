@@ -168,6 +168,7 @@ class HealthAnalyzer:
         plt.show()
         
         return corr 
+    
     def plot_residuals(self):
         """
         Plot residuals from the multiple regression model.
